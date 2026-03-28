@@ -4,12 +4,20 @@ extends WorldEnvironment
 @export var sun_light: DirectionalLight3D
 @export_range(2.0, 10.0) var turbidity: float = 2.0
 
+@export var sun_label: Label
+@export var turbidity_label: Label
+@export var turbidity_slider: HSlider
+@export var sun_height_slider: HSlider
+
 var sky_material: ShaderMaterial
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	sky_material = environment.sky.sky_material
-
+	sun_height_slider.value_changed.connect(_on_sun_height_changed)
+	_on_sun_height_changed(sun_height_slider.value)
+	turbidity_slider.value_changed.connect(_on_turbidity_changed)
+	_on_turbidity_changed(turbidity_slider.value)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -23,10 +31,14 @@ func _process(_delta: float) -> void:
 		return
 	# vector sun ray direction from ground to sky
 	var sun_dir = -sun_light.global_basis.z.normalized()
-	#if sun_dir.y < -0.02:
-		#sky_material.set_shader_parameter("exposure", 0.0)
 	
 	sky_material.set_shader_parameter("sun_direction", sun_dir)
+	
+	if sun_dir.y <= 0.0:
+		sun_light.light_energy = 0.0
+	else:
+		sun_light.light_energy = clamp(sun_dir.y * 5.0, 0.0, 1.0)
+
 	# Appendix A.2
 	# calculating a set of Y value
 	var A_Y =  0.1787 * turbidity - 1.4630
@@ -68,7 +80,7 @@ func _process(_delta: float) -> void:
 	var zenith_Y = (4.0453 * turbidity - 4.9710) * tan(chi) + 2.4192
 	
 	# Avoid minus values
-	zenith_Y = max(zenith_Y, 0.0)
+	zenith_Y = max(zenith_Y, 0.05)
 	
 	# Calculate xz and yz
 	var T2 = turbidity * turbidity
@@ -90,3 +102,16 @@ func _process(_delta: float) -> void:
 	)
 	
 	sky_material.set_shader_parameter("zenith_Yxy", Vector3(zenith_Y, zenith_x, zenith_y))
+	
+	var sky_exposure = smoothstep(-0.08, 0.0, sun_dir.y)
+	sky_material.set_shader_parameter("exposure", sky_exposure)
+
+# sun height slider function
+func _on_sun_height_changed(value: float) -> void:
+	sun_label.text = "sun height: " + str(snapped(value, 0.01))
+	sun_light.rotation_degrees.x = value * 90.0
+
+# turbidity slider
+func _on_turbidity_changed(value: float) -> void:
+	turbidity_label.text = "turbidity: " + str(snapped(value, 0.1))
+	turbidity = value

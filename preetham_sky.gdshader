@@ -4,6 +4,7 @@ shader_type sky;
 uniform vec3 sun_direction;
 
 uniform float theta_s;
+uniform float exposure = 1.0;
 
 // 5 set of parameters
 uniform vec3 perez_A;
@@ -19,7 +20,7 @@ vec3 Yxy_to_RGB(vec3 Yxy)
 {
 	float Y = Yxy.x;
     float x = Yxy.y;
-    float y = max(Yxy.z, 0.0001); // 防止除以零
+    float y = max(Yxy.z, 0.0001);
     
     float X = (x * Y) / y;
     float Z = ((1.0 - x - y) * Y) / y;
@@ -62,5 +63,5 @@ void sky() {
     vec3 rgb_color = Yxy_to_RGB(current_Yxy);
     
     // multiply by a small coefficient
-    COLOR = rgb_color * 0.05;
+    COLOR = rgb_color * 0.05 * exposure;
 }

@@ -2,17 +2,20 @@
 
 [ext_resource type="Shader" uid="uid://dkdy4fm0ac84f" path="res://preetham_sky.gdshader" id="1_a202f"]
 [ext_resource type="Script" uid="uid://bkv8rfmt02hld" path="res://SkyController.gd" id="2_noarx"]
+[ext_resource type="Shader" uid="uid://cjaopu82oy8d8" path="res://sea.gdshader" id="3_a0tk4"]
+[ext_resource type="Script" uid="uid://45ve6y62wpfa" path="res://camera_3d.gd" id="3_r3fl7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 shader = ExtResource("1_a202f")
-shader_parameter/sun_direction = Vector3(-3.7035017e-09, 0.7443116, -0.6678326)
-shader_parameter/theta_s = 0.7312929193157096
-shader_parameter/perez_A = Vector3(0.1771086, -0.4363354, -0.4140726)
-shader_parameter/perez_B = Vector3(-2.8343613, -0.609537, -0.86271)
-shader_parameter/perez_C = Vector3(5.1167593, 0.2088288, 0.1376938)
-shader_parameter/perez_D = Vector3(-1.4702332, -1.4872098, -2.0584497)
-shader_parameter/perez_E = Vector3(-0.244626, 0.0149126, -0.0471402)
-shader_parameter/zenith_Yxy = Vector3(25.270016, 0.2842462, 0.30551562)
+shader_parameter/sun_direction = Vector3(0, 0.50000006, -0.86602545)
+shader_parameter/theta_s = 1.047197482371081
+shader_parameter/exposure = 1.0
+shader_parameter/perez_A = Vector3(-1.1056, -0.2978, -0.2942)
+shader_parameter/perez_B = Vector3(-0.2833, -0.1322, -0.1808)
+shader_parameter/perez_C = Vector3(5.2797, 0.2117, 0.1944)
+shader_parameter/perez_D = Vector3(-2.3359, -1.0271, -1.7419)
+shader_parameter/perez_E = Vector3(0.2363, 0.0386, 0.0311)
+shader_parameter/zenith_Yxy = Vector3(3.9183276, 0.2384949, 0.24259973)
 
 [sub_resource type="Sky" id="Sky_a0tk4"]
 sky_material = SubResource("ShaderMaterial_noarx")
@@ -20,18 +23,69 @@ sky_material = SubResource("ShaderMaterial_noarx")
 [sub_resource type="Environment" id="Environment_r3fl7"]
 background_mode = 2
 sky = SubResource("Sky_a0tk4")
-sky_rotation = Vector3(1.600467, 0.1134464, 0)
+sky_rotation = Vector3(0.34906584, 0, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_r3fl7"]
+size = Vector2(10000, 10000)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jka67"]
+render_priority = 0
+shader = ExtResource("3_a0tk4")
+shader_parameter/water_color = Color(0.01, 0.03, 0.05, 1)
+shader_parameter/roughness = 0.05
 
 [node name="Node3D" type="Node3D" unique_id=570736886]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=448551600 node_paths=PackedStringArray("sun_light")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2038648204]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1468740761]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -45.0
+offset_right = 300.0
+offset_bottom = 45.0
+grow_vertical = 2
+
+[node name="SunLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=2143713399]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="SunPosition" type="HSlider" parent="CanvasLayer/VBoxContainer" unique_id=1125444158]
+layout_mode = 2
+min_value = -0.1
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="TurbLabel" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1504764115]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Turbidity" type="HSlider" parent="CanvasLayer/VBoxContainer" unique_id=504090613]
+layout_mode = 2
+min_value = 2.0
+max_value = 10.0
+step = 0.1
+value = 2.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=448551600 node_paths=PackedStringArray("sun_light", "sun_label", "turbidity_label", "turbidity_slider", "sun_height_slider")]
 environment = SubResource("Environment_r3fl7")
 script = ExtResource("2_noarx")
 sun_light = NodePath("../SunLight")
-turbidity = 9.178
+sun_label = NodePath("../CanvasLayer/VBoxContainer/SunLabel")
+turbidity_label = NodePath("../CanvasLayer/VBoxContainer/TurbLabel")
+turbidity_slider = NodePath("../CanvasLayer/VBoxContainer/Turbidity")
+sun_height_slider = NodePath("../CanvasLayer/VBoxContainer/SunPosition")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=1812352544]
-transform = Transform3D(0.9941508, -0.10799933, 0, 0.07212548, 0.66392624, -0.74431145, 0.080385156, 0.73995787, 0.6678325, 0, 0, 0)
+transform = Transform3D(0.9999998, 0, 0, 0, 0.8660252, -0.49999994, 0, 0.49999988, 0.86602527, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=487808514]
-transform = Transform3D(0.976296, 3.7843506e-08, -0.21643962, 0, 1, 1.7484555e-07, 0.21643962, -1.7070101e-07, 0.976296, 0, 0, -5)
+transform = Transform3D(1, 0, 0, 0, 0.9396926, -0.34202012, 0, 0.34202012, 0.9396926, 0, 1.7, -5)
+script = ExtResource("3_r3fl7")
+
+[node name="Sea" type="MeshInstance3D" parent="." unique_id=1967190257]
+mesh = SubResource("PlaneMesh_r3fl7")
+surface_material_override/0 = SubResource("ShaderMaterial_jka67")
