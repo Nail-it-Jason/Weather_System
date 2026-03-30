@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cexjt3yadu22w"]
+
+[ext_resource type="Shader" uid="uid://mvo78cd8e6c7" path="res://new_shader.gdshader" id="1_upwfn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_72ehs"]
+shader = ExtResource("1_upwfn")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_upwfn"]
+viewport_path = NodePath("SubViewport")
+
+[node name="AtmosphereGenerator" type="Node2D" unique_id=477766514]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1021992558]
+size = Vector2i(256, 64)
+render_target_update_mode = 4
+
+[node name="ColorRect" type="ColorRect" parent="SubViewport" unique_id=210782617]
+material = SubResource("ShaderMaterial_72ehs")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2026714003]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("ViewportTexture_upwfn")
