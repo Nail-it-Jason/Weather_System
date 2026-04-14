@@ -3,11 +3,11 @@ shader_type canvas_item;
 const float R_ground = 6360.0; 
 const float R_top = 6460.0;    
 
-const vec3 rayleigh_scattering = vec3(5.802, 13.558, 33.1); 
-const float mie_scattering = 3.996;                         
-const float mie_absorption = 4.40;                          
+const vec3 rayleigh_scattering = vec3(5.802, 13.558, 33.1) * 0.001; 
+const float mie_scattering = 3.996 * 0.001;                            
+const float mie_absorption = 4.40 * 0.001;                             
 const float mie_extinction = mie_scattering + mie_absorption; 
-const vec3 ozone_absorption = vec3(0.650, 1.881, 0.085);    
+const vec3 ozone_absorption = vec3(0.650, 1.881, 0.085) * 0.001;
 
 const float rayleigh_scale_height = 8.0;
 const float mie_scale_height = 1.2;

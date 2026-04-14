@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://bd7rfh7prtjyn"]
 
 [ext_resource type="Shader" uid="uid://b4utynh82f1q5" path="res://transmittance.gdshader" id="1_2jqdg"]
+[ext_resource type="Shader" uid="uid://cfhcw5l5aaiun" path="res://multi_scattering.gdshader" id="2_p42vj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p42vj"]
+resource_local_to_scene = true
 shader = ExtResource("1_2jqdg")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_nqj1l"]
+viewport_path = NodePath("TransmittanceViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kd4ky"]
+resource_local_to_scene = true
+shader = ExtResource("2_p42vj")
+shader_parameter/transmittance_tex = SubResource("ViewportTexture_nqj1l")
 
 [node name="AtmosphereManager" type="Node" unique_id=905033299]
 
@@ -19,3 +29,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MultiScatteringViewPort" type="SubViewport" parent="." unique_id=1588871969]
+size = Vector2i(32, 32)
+
+[node name="MultiScatteringRect" type="ColorRect" parent="MultiScatteringViewPort" unique_id=1676915479]
+material = SubResource("ShaderMaterial_kd4ky")
+offset_right = 40.0
+offset_bottom = 40.0
