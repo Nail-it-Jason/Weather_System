@@ -2,6 +2,8 @@
 
 [ext_resource type="Shader" uid="uid://b4utynh82f1q5" path="res://transmittance.gdshader" id="1_2jqdg"]
 [ext_resource type="Shader" uid="uid://cfhcw5l5aaiun" path="res://multi_scattering.gdshader" id="2_p42vj"]
+[ext_resource type="Shader" uid="uid://yrpau8qq0gha" path="res://sky_view.gdshader" id="3_kd4ky"]
+[ext_resource type="Shader" uid="uid://bm6cvjpfwokmd" path="res://sky.gdshader" id="4_mv7ih"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p42vj"]
 resource_local_to_scene = true
@@ -14,6 +16,37 @@ viewport_path = NodePath("TransmittanceViewPort")
 resource_local_to_scene = true
 shader = ExtResource("2_p42vj")
 shader_parameter/transmittance_tex = SubResource("ViewportTexture_nqj1l")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ua38k"]
+viewport_path = NodePath("MultiScatteringViewPort")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_u13va"]
+viewport_path = NodePath("TransmittanceViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k0q1d"]
+resource_local_to_scene = true
+shader = ExtResource("3_kd4ky")
+shader_parameter/transmittance_tex = SubResource("ViewportTexture_u13va")
+shader_parameter/multi_scattering_tex = SubResource("ViewportTexture_ua38k")
+shader_parameter/sun_direction = Vector3(0, 0.5, 0.866)
+shader_parameter/view_height = 6400.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yiip6"]
+viewport_path = NodePath("SkyViewViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lxi63"]
+resource_local_to_scene = true
+shader = ExtResource("4_mv7ih")
+shader_parameter/sky_view_lut = SubResource("ViewportTexture_yiip6")
+shader_parameter/sun_direction = Vector3(0, 0, 0)
+shader_parameter/exposure = 15.0
+
+[sub_resource type="Sky" id="Sky_0adao"]
+sky_material = SubResource("ShaderMaterial_lxi63")
+
+[sub_resource type="Environment" id="Environment_3qsea"]
+background_mode = 2
+sky = SubResource("Sky_0adao")
 
 [node name="AtmosphereManager" type="Node" unique_id=905033299]
 
@@ -35,5 +68,22 @@ size = Vector2i(32, 32)
 
 [node name="MultiScatteringRect" type="ColorRect" parent="MultiScatteringViewPort" unique_id=1676915479]
 material = SubResource("ShaderMaterial_kd4ky")
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkyViewViewPort" type="SubViewport" parent="." unique_id=1079071380]
+size = Vector2i(200, 100)
+
+[node name="SkyViewRect" type="ColorRect" parent="SkyViewViewPort" unique_id=679717907]
+material = SubResource("ShaderMaterial_k0q1d")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1028986358]
+environment = SubResource("Environment_3qsea")
