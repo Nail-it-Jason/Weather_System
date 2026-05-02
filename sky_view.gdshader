@@ -3,7 +3,9 @@ shader_type canvas_item;
 uniform sampler2D transmittance_tex;
 uniform sampler2D multi_scattering_tex;
 uniform vec3 sun_direction;
-uniform float view_height = 6360.5; // 500m above
+/////////////////////////////////
+uniform float view_height = 6360.3;
+/////////////////////////////////
 
 const float R_ground = 6360.0;
 const float R_top = 6460.0;

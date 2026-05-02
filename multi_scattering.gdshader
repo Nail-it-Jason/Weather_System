@@ -29,7 +29,7 @@ vec3 get_transmittance(vec3 pos, vec3 sun_dir) {
     float r = length(pos);
     float mu = dot(pos, sun_dir) / r; // cos(theta)
     
-    // mapping to UV coordinate
+    // mapping to UV coordinate [0, 1]
     float u = mu * 0.5 + 0.5;
     float v = clamp((r - R_ground) / (R_top - R_ground), 0.0, 1.0);
     

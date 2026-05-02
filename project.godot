@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Weather_System"
-run/main_scene="uid://bd7rfh7prtjyn"
+run/main_scene="uid://c660l2kxulp1q"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -29,3 +29,4 @@ window/stretch/aspect="expand"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+viewport/hdr_2d=true
