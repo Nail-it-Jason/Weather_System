@@ -27,8 +27,34 @@ extends Node
 		view_height = v
 		_update_atmosphere()
 
+@export_group("Cloud Control")
+@export_range(0.0, 1.0, 0.01) var cloud_coverage: float = 0.5 :
+	set(v):
+		cloud_coverage = v
+		_update_cloud_params()
+
+@export_range(1.0, 20.0, 0.1) var cloud_size: float = 5.0 :
+	set(v):
+		cloud_size = v
+		_update_cloud_params()
+
+@export_range(0.0, 10.0, 0.1) var cloud_speed: float = 1.0 :
+	set(v):
+		cloud_speed = v
+		_update_cloud_params()
+
+func _update_cloud_params():
+	if not is_inside_tree(): return
+	if world_env and world_env.environment and world_env.environment.sky:
+		var sky_mat = world_env.environment.sky.sky_material
+		if sky_mat:
+			sky_mat.set_shader_parameter("cloud_coverage", cloud_coverage)
+			sky_mat.set_shader_parameter("cloud_size", cloud_size)
+			sky_mat.set_shader_parameter("cloud_speed", cloud_speed)
+
 func _ready():
 	_update_atmosphere()
+	_update_cloud_params()
 
 func _update_atmosphere():
 	if not is_inside_tree(): return
@@ -68,10 +94,12 @@ func _update_atmosphere():
 		
 		var energy_mult = clamp(sin(el) * 4.0, 0.0, 1.0)
 		
-		sun_light.light_energy = lerp(0.2, 2.0, energy_mult)
-		
-		var sunset_color = Color(1.0, 0.3, 0.05) # 极深的血橙色
-		var day_color = Color(1.0, 0.95, 0.9)    # 日常日光白
+		if el <= 0.0:
+			sun_light.light_energy = 0.0
+		else:
+			sun_light.light_energy = lerp(0.05, 2.0, energy_mult)		
+		var sunset_color = Color(1.0, 0.3, 0.05)
+		var day_color = Color(1.0, 0.95, 0.9)
 		sun_light.light_color = day_color.lerp(sunset_color, 1.0 - energy_mult)
 
 # update parameter to certain path of shader
