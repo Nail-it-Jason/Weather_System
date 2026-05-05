@@ -81,7 +81,9 @@ func _update_atmosphere():
 			var sky_vp = get_node_or_null("SkyViewViewPort")
 			if sky_vp:
 				sky_mat.set_shader_parameter("sky_view_lut", sky_vp.get_texture())
-			
+			var trans_vp = get_node_or_null("TransmittanceViewPort")
+			if trans_vp:
+				sky_mat.set_shader_parameter("transmittance_tex", trans_vp.get_texture())
 			sky_mat.set_shader_parameter("exposure", exposure)
 			
 			sky_mat.set_shader_parameter("sun_direction", sun_dir)

@@ -9,6 +9,12 @@ const float mie_absorption = 4.40 * 0.001;
 const float mie_extinction = mie_scattering + mie_absorption; 
 const vec3 ozone_absorption = vec3(0.650, 1.881, 0.085) * 0.001;
 
+//const vec3 rayleigh_scattering = vec3(5.802, 13.558, 33.1) * 0.001; 
+//const float mie_scattering = 5.0 * 0.001;                         
+//const float mie_absorption = 0.5 * 0.001;                         
+//const float mie_extinction = mie_scattering + mie_absorption;
+//const vec3 ozone_absorption = vec3(0.650, 1.881, 0.085) * 0.0006;
+
 const float rayleigh_scale_height = 8.0;
 const float mie_scale_height = 1.2;
 
