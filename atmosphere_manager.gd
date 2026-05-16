@@ -27,34 +27,10 @@ extends Node
 		view_height = v
 		_update_atmosphere()
 
-@export_group("Cloud Control")
-@export_range(0.0, 1.0, 0.01) var cloud_coverage: float = 0.5 :
-	set(v):
-		cloud_coverage = v
-		_update_cloud_params()
 
-@export_range(1.0, 20.0, 0.1) var cloud_size: float = 5.0 :
-	set(v):
-		cloud_size = v
-		_update_cloud_params()
-
-@export_range(0.0, 10.0, 0.1) var cloud_speed: float = 1.0 :
-	set(v):
-		cloud_speed = v
-		_update_cloud_params()
-
-func _update_cloud_params():
-	if not is_inside_tree(): return
-	if world_env and world_env.environment and world_env.environment.sky:
-		var sky_mat = world_env.environment.sky.sky_material
-		if sky_mat:
-			sky_mat.set_shader_parameter("cloud_coverage", cloud_coverage)
-			sky_mat.set_shader_parameter("cloud_size", cloud_size)
-			sky_mat.set_shader_parameter("cloud_speed", cloud_speed)
 
 func _ready():
 	_update_atmosphere()
-	_update_cloud_params()
 
 func _update_atmosphere():
 	if not is_inside_tree(): return

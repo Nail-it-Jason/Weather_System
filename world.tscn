@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bd7rfh7prtjyn" path="res://atmosphere_manager.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://54hdjougfoof" path="res://camera_3d.gd" id="2_fj7yv"]
 [ext_resource type="Shader" uid="uid://c6cavuvps8kv5" path="res://water.gdshader" id="2_tlwt5"]
+[ext_resource type="Script" uid="uid://bim6xq083ajiu" path="res://bird_spawner.gd" id="4_036b0"]
+[ext_resource type="PackedScene" uid="uid://dqe63nca7apmg" path="res://bird.tscn" id="5_dwbse"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f3sb7"]
 size = Vector2(10000, 10000)
@@ -34,9 +36,6 @@ shader_parameter/scroll2 = Vector2(-0.01, 0.03)
 sun_elevation = 15.4
 sun_azimuth = 180.0
 exposure = 10.0
-cloud_coverage = 0.73
-cloud_size = 20.0
-cloud_speed = 0.0
 
 [node name="Ocean" type="MeshInstance3D" parent="." unique_id=1770013537]
 mesh = SubResource("PlaneMesh_f3sb7")
@@ -46,3 +45,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_dwbse")
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 2, 0)
 fov = 60.0
 script = ExtResource("2_fj7yv")
+
+[node name="BirdSpawner" type="Node3D" parent="." unique_id=742618389]
+script = ExtResource("4_036b0")
+bird_scene = ExtResource("5_dwbse")
